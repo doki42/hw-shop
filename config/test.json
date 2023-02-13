@@ -1,0 +1,8 @@
+{
+  "database": {
+    "username": "postgres",
+    "database": "practice",
+    "dropSchema": true,
+    "synchronize": true
+  }
+}
