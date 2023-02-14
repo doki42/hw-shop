@@ -16,11 +16,17 @@
     }
   },
   "database": {
-    "type": "postgres",
-    "host": "env(DB_HOST)",
-    "port": "env(DB_PORT)",
-    "username": "env(DB_USERNAME)",
-    "password": "env(DB_PASSWORD)",
-    "database": "env(DB_NAME)"
+    "type": "mssql",
+    "server": "localhost",
+    
+    "database": "practice",
+    "extra": {
+      "driver": "msnodesqlv8",
+      "options": {
+        "trustedConnection": true,
+        "instanceName": "SQLEXPRESS"
+      }
+    }
+    
   }
 }
