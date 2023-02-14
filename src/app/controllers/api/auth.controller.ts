@@ -1,4 +1,7 @@
-import { Context, hashPassword, HttpResponseNoContent, HttpResponseOK, HttpResponseUnauthorized, Post, ValidateBody, verifyPassword } from '@foal/core';
+import { Context, HttpResponseNoContent, HttpResponseOK, HttpResponseUnauthorized, Post, ValidateBody, verifyPassword } from '@foal/core';
+import { getSecretOrPrivateKey } from '@foal/jwt';
+import { sign } from 'jsonwebtoken';
+
 import { User } from '../../entities';
 
 const credentialsSchema = {
@@ -28,12 +31,14 @@ export class AuthController {
       return new HttpResponseUnauthorized();
     }
 
-    ctx.session!.setUser(user);
-    ctx.user = user;
+    const token = sign(
+      { email: user.email},
+      getSecretOrPrivateKey(),
+      { expiresIn: '1h'}
+    );
 
     return new HttpResponseOK({
-      id: user.id,
-      name: user.email,
+      token
     });
   }
 

@@ -1,5 +1,5 @@
-import { ApiInfo, ApiServer, controller, UseSessions  } from '@foal/core';
-import { User } from '../entities';
+import { ApiInfo, ApiServer, controller } from '@foal/core';
+import { JWTOptional } from '@foal/jwt';
 import { AuthController, ProductsController } from './api';
 
 @ApiInfo({
@@ -9,10 +9,7 @@ import { AuthController, ProductsController } from './api';
 @ApiServer({
   url: '/api'
 })
-@UseSessions({
-  cookie: true,
-  user: (id: number) => User.findOneBy({ id }),
-})
+@JWTOptional()
 
 export class ApiController {
 

@@ -1,5 +1,6 @@
-import { Context, Delete, Get, HttpResponseCreated, HttpResponseNoContent, HttpResponseNotFound, HttpResponseOK, Post, UserRequired, ValidateBody, ValidatePathParam, ValidateQueryParam } from '@foal/core';
+import { Context, Get, HttpResponseBadRequest, HttpResponseCreated, HttpResponseOK, Post, ValidateBody, ValidateQueryParam } from '@foal/core';
 import { Product } from '../../entities';
+import { JWTRequired } from '@foal/jwt';
 
 
 export class ProductsController {
@@ -21,7 +22,7 @@ export class ProductsController {
     const product = await Product
       .createQueryBuilder('product')
       .where('product.id = :productId', { productId })
-      .getOneOrFail();
+      .getOne();
 
       return new HttpResponseOK(product);
   }
@@ -36,8 +37,15 @@ export class ProductsController {
       active: {type: 'boolean'}
     }
   })
-  @UserRequired()
+  @JWTRequired()
   async addProduct(ctx: Context) {
+    const oldProductName: string = ctx.request.body.name;
+    const oldProduct = await Product
+    .createQueryBuilder('product')
+    .where('product.name = :name', { name: `${oldProductName}`})
+    .getOne();
+
+    if(!oldProduct){
     const product = new Product();
     product.name = ctx.request.body.name;
     product.price = ctx.request.body.price;
@@ -45,8 +53,10 @@ export class ProductsController {
     product.active = ctx.request.body.active;
 
     await product.save();
-
+    
     return new HttpResponseCreated();
+     } else 
+    return new HttpResponseBadRequest({message: 'The product is already registered!'});
 
   }
 
