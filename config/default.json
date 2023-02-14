@@ -4,6 +4,15 @@
     "loggerFormat": "tiny",
     "session": {
       "store": "@foal/typeorm"
+    },
+    "jwt": {
+      "secret": "ZDGNtG4SJrxEXlB8dUdo3rY45PvWU2rddMlmtXY0SRQ=",
+      "secretEncoding": "base64"
+    },
+    "ďisk": {
+      "local": {
+        "directory": "assets"
+      }
     }
   },
   "database": {

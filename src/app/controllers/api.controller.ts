@@ -15,7 +15,7 @@ export class ApiController {
 
   subControllers = [
     controller('/products', ProductsController),
-    controller('/auth', AuthController)
+    controller('/auth', AuthController),
   ];
 
 }
